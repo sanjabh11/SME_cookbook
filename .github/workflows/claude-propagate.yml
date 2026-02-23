@@ -1,0 +1,70 @@
+name: Claude Policy Propagation
+# Propagates COMPANY_CLAUDE.md, enterprise governance, and skills to all registered repos.
+# Trigger: any push to main that modifies policy files.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'COMPANY_CLAUDE.md'
+      - 'enterprise/governance/**'
+      - 'enterprise/rbac/role-templates/**'
+      - '.agent/skills/**'
+      - 'templates/**'
+
+env:
+  # Add your target repositories here — one per line
+  TARGET_REPOS: |
+    sanjabh11/SME_cookbook
+
+jobs:
+  propagate-policies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source (this cookbook repo)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Git identity
+        run: |
+          git config --global user.name "claude-propagation-bot"
+          git config --global user.email "bot@noreply.github.com"
+
+      - name: Propagate policies to all target repos
+        env:
+          GITHUB_TOKEN: ${{ secrets.POLICY_PROPAGATION_PAT }}
+        run: |
+          IFS=$'\n'
+          for repo in $TARGET_REPOS; do
+            repo=$(echo "$repo" | tr -d '[:space:]')
+            [ -z "$repo" ] && continue
+
+            echo "▶ Propagating to: $repo"
+
+            # Clone target repo
+            git clone "https://x-access-token:${GITHUB_TOKEN}@github.com/${repo}.git" /tmp/target-repo
+            cd /tmp/target-repo
+
+            # Copy policies
+            cp -v "$GITHUB_WORKSPACE/COMPANY_CLAUDE.md" ./COMPANY_CLAUDE.md
+            mkdir -p enterprise/governance enterprise/rbac/role-templates .agent/skills templates
+            cp -rv "$GITHUB_WORKSPACE/enterprise/governance/." ./enterprise/governance/
+            cp -rv "$GITHUB_WORKSPACE/enterprise/rbac/role-templates/." ./enterprise/rbac/role-templates/
+            cp -rv "$GITHUB_WORKSPACE/.agent/skills/." ./.agent/skills/
+            cp -v "$GITHUB_WORKSPACE/templates/CLAUDE.md.example" ./templates/CLAUDE.md.example
+
+            # Commit and push if changes exist
+            git add -A
+            if git diff --staged --quiet; then
+              echo "  ℹ️  No changes to propagate for $repo"
+            else
+              git commit -m "Auto: propagate Claude policies from SME_cookbook/main — $(date -u +%Y-%m-%d)"
+              git push origin main
+              echo "  ✅ Propagated successfully to $repo"
+            fi
+
+            cd /
+            rm -rf /tmp/target-repo
+          done

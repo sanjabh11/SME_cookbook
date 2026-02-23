@@ -1,6 +1,12 @@
 ---
 name: sub-agent-spawner
 description: Orchestrates multi-agent workflows by decomposing a task, spawning specialist sub-agents, running them in parallel, validating outputs, and merging results. Used by marketing, code-gen, robotics, and web-dev teams.
+triggers:
+  - "use sub-agents for this"
+  - "spawn specialists"
+  - "run the orchestrator pattern"
+  - "deploy org skills"
+  - "marketplace import"
 ---
 
 # Sub-Agent Spawner Skill
@@ -91,3 +97,8 @@ Merge validated outputs into the final format. Output:
 - If a specialist consistently fails at one item type: log it, skip it, and flag for human review. Never block the entire batch.
 - If the validator fails more than 20% of items: stop and report — the specialist's system prompt likely needs revision.
 - Always commit intermediate results: `git commit -m "agents: [N] items complete, continuing..."`
+
+## Enterprise Scale-Up
+
+For 10+ parallel agents or API costs expected to exceed $20, switch to the enterprise multi-agent architecture.
+See: `enterprise/multi-agent/agent-teams.md` for Opus 4.6 orchestrator + Sonnet 4.5 specialist cost-optimized pattern.

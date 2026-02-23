@@ -128,6 +128,16 @@ Log to root `CHANGELOG.md`: `YYYY-MM-DD | Security-Review | [PRs reviewed] | [Fi
 
 ---
 
+## 7. Enterprise Full-Codebase Scanning
+
+This workflow covers **PR-level** security reviews (1 PR at a time).  
+For **full codebase vulnerability scanning** (Enterprise/Team plans only), switch to:  
+`enterprise/security-scanning/security-scan-workflow.md`
+
+The enterprise scan adds 4 more categories (IaC, multi-agent boundaries, AI supply chain, audit log integrity) and generates patch proposals in `patches/` for human review.
+
+---
+
 ## Lessons Learned
 
 | Date | Lesson | Added By |

@@ -52,3 +52,35 @@ Copy-paste the exact prompt into the Claude Code sidebar. Expect results in 1–
 - Add notes to CHANGELOG.md.
 
 Finish 2–3 exercises today and you will already be faster than yesterday. Share results in your team channel!
+
+---
+
+## 🐛 Beginner Debug Drills
+
+These drills are designed to teach you how to handle the most common failure modes before they become real problems. Run one drill per week in your first month.
+
+### Drill 1: The Broken YAML (Catch it before CI does)
+1. Open `.github/workflows/claude-lint.yml`
+2. Deliberately add a 2-space indentation error on one line under a `steps:` block.
+3. Run: `bash safeguards/local-lint.sh`
+4. Observe: the linter catches it and prints a YAML ERROR message.
+5. Fix the indentation and re-run until you see `✅ All checks passed.`
+**Lesson:** Your lint script catches YAML errors locally before they break CI. This is why we run it.
+
+### Drill 2: The Slot Machine Rollback
+1. Go to `cross-team/slot-machine-refactor/`.
+2. Run: `git add -A && git commit -m "drill: pre-slot-machine-test"`
+3. Ask Claude: "Add a comment to every function in safeguards/local-lint.sh. Auto-accept."
+4. Wait 1 minute. Then inspect the changes with `git diff`.
+5. Practice rollback: `git reset --hard HEAD`
+6. Confirm the file is back to original.
+**Lesson:** The rollback is fast, safe, and completely reversible. You can always start over.
+
+### Drill 3: The Accidental Hardcoded Secret
+1. Open `cross-team/security-review/sample_diff.txt`
+2. Observe: it contains `AWS_KEY = "AKIAIOSFODNN7EXAMPLE"`
+3. Run `/security-review` on it.
+4. Observe: Claude returns `🔴 FAIL` on the Secrets & Credentials check.
+5. Ask Claude: "What is the correct fix for the hardcoded AWS key?"
+6. Log the exercise in `CHANGELOG.md`: `2026-02-XX | Drill 3 | Identified hardcoded secret pattern | [your name]`
+**Lesson:** This is what a hardcoded secret looks like. And this is exactly why the security review checklist exists.

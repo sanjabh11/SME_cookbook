@@ -1,0 +1,4 @@
+Ad copy variant for Slack review testing: 
+Product: ROS2 Lidar Node Controller
+Draft Headline: "Precision ROS2 Controllers — Built for Scale"
+Draft Description: "Automate your robot's sensor pipeline with the most reliable Lidar integration on the market."

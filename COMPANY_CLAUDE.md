@@ -129,5 +129,19 @@ This cookbook is designed to be forked and adapted. To customize for a new org:
 *(Updated via the session-end ritual — see Section 8)*
 
 | Date | Team | Lesson |
-|---|---|---|
+|---|---|
+---|
 | 2026-02-23 | All | Initial constitution created from Anthropic internal guide best practices |
+| 2026-02-23 | All | RSP/ASL-3 enterprise extension added (COMPANY_CLAUDE_ENTERPRISE.md) |
+
+---
+
+## Enterprise Extension
+
+**Role inheritance active:** Load your role-specific policy file at the start of every enterprise session:
+- Engineer: `enterprise/rbac/role-templates/Engineer.md`
+- Analyst: `enterprise/rbac/role-templates/Analyst.md`
+- Exec: `enterprise/rbac/role-templates/Exec.md`
+- Designer: `enterprise/rbac/role-templates/Designer.md`
+
+**Enterprise governance:** See `enterprise/governance/COMPANY_CLAUDE_ENTERPRISE.md` for RSP/ASL-3 extensions, audit logging requirements, and the 45-minute autonomy cap.

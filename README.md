@@ -1,6 +1,20 @@
-# 📓 Cookbook — Claude Code for SME Teams
+# 📓 Cookbook — Claude Code for SME & Enterprise Teams
 
-> **What this is:** A ready-to-run collection of Claude Code workflows for a 100-person robotics and web development company. Each subfolder is a standalone, self-explanatory workspace.
+> **What this is:** A ready-to-run, dual-mode collection of Claude Code workflows designed for teams from 10 to 50,000 users. SMEs use the standard team folders; enterprises add governance, compliance, and RBAC via the `/enterprise/` directory.
+
+---
+
+## 🤔 SME or Enterprise? Start Here.
+
+| Question | If YES → | If NO → |
+|---|---|---|
+| Are you a team of < 500 people? | 🟢 **Use SME mode** (all standard folders) | 🔵 **Use Enterprise mode** (start with `enterprise/`) |
+| Do you need HIPAA or SOC 2 compliance? | 🔵 **Enterprise** → `enterprise/compliance/` | 🟢 SME is fine |
+| Do you manage 10+ repos needing the same policies? | 🔵 **Enterprise** → `enterprise/monorepo/` | 🟢 SME is fine |
+| Do different roles need different permissions? | 🔵 **Enterprise** → `enterprise/rbac/` | 🟢 SME is fine |
+| Are you using Claude Code Security (Feb 2026)? | 🔵 **Enterprise** → `enterprise/security-scanning/` | 🟢 Use `cross-team/security-review/` |
+
+**First time migrating from SME to Enterprise?** See `enterprise/migration/sme-to-enterprise.md`.
 
 ---
 

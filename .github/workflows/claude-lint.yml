@@ -1,0 +1,104 @@
+name: Claude Policy & Skills Lint
+# Validates CLAUDE.md files, YAML syntax, skills frontmatter, and placeholder completeness.
+# Runs on every push and PR. Blocks merges if errors are detected.
+
+on:
+  push:
+    branches:
+      - main
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-policies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      - name: Validate YAML files
+        run: |
+          echo "▶ Validating YAML files..."
+          ERRORS=0
+          find . -name "*.yml" -o -name "*.yaml" | grep -v ".git" | while read f; do
+            if python3 -c "import yaml; yaml.safe_load(open('$f'))" 2>/dev/null; then
+              echo "  ✅ $f"
+            else
+              echo "  ❌ YAML ERROR: $f"
+              ERRORS=$((ERRORS+1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::$ERRORS YAML file(s) failed validation"
+            exit 1
+          fi
+
+      - name: Validate Skills YAML frontmatter
+        run: |
+          echo "▶ Checking .agent/skills/ YAML frontmatter..."
+          ERRORS=0
+          for f in .agent/skills/*.md; do
+            [ -f "$f" ] || continue
+            if head -1 "$f" | grep -q "^---"; then
+              echo "  ✅ $f"
+            else
+              echo "  ❌ Missing YAML frontmatter: $f"
+              ERRORS=$((ERRORS+1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::Skills files missing YAML frontmatter"
+            exit 1
+          fi
+
+      - name: Check for unfilled placeholders
+        run: |
+          echo "▶ Checking for unfilled {{PLACEHOLDER}} tokens..."
+          UNFILLED=$(grep -r "{{" --include="*.md" --include="*.sh" --include="*.yml" \
+            --exclude-dir=templates --exclude-dir=".git" . 2>/dev/null | grep -v "^Binary" || true)
+          if [ -n "$UNFILLED" ]; then
+            echo "::error::Unfilled placeholders found outside templates/:"
+            echo "$UNFILLED"
+            exit 1
+          else
+            echo "  ✅ No unfilled placeholders outside templates/"
+          fi
+
+      - name: Verify required root files exist
+        run: |
+          echo "▶ Verifying required files..."
+          REQUIRED=(
+            "COMPANY_CLAUDE.md"
+            "README.md"
+            "ONBOARDING.md"
+            "CHANGELOG.md"
+            ".gitignore"
+            "templates/CLAUDE.md.example"
+          )
+          ERRORS=0
+          for f in "${REQUIRED[@]}"; do
+            if [ -f "$f" ]; then
+              echo "  ✅ $f"
+            else
+              echo "  ❌ MISSING: $f"
+              ERRORS=$((ERRORS+1))
+            fi
+          done
+          if [ $ERRORS -gt 0 ]; then
+            echo "::error::Required files missing"
+            exit 1
+          fi
+
+      - name: Summary
+        if: success()
+        run: echo "✅ All Claude policy and skills lint checks passed."
