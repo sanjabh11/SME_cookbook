@@ -1,0 +1,160 @@
+# {{TEAM_NAME}} — CLAUDE.md
+
+> **Copy this file into any new folder. Replace every `{{PLACEHOLDER}}` with your team's details.**
+> **Target length: 80–200 lines. The more specific, the better Claude performs.**
+
+---
+
+## 1. Role & Context
+
+You are assisting the **{{TEAM_NAME}}** team at **{{ORG_NAME}}**.
+
+**Team size:** {{TEAM_SIZE}} people  
+**Technical level:** {{TECHNICAL_LEVEL: non-technical / intermediate / expert}}  
+**Primary location:** {{CITY_OR_TIMEZONE}}
+
+{{PLAIN_ENGLISH_DESCRIPTION_OF_WHO_THIS_TEAM_IS_AND_WHAT_THEY_DO}}
+
+---
+
+## 2. Audience Instructions
+
+{{IF_NON_TECHNICAL}}
+- Use plain English only. Never assume coding knowledge.
+- Never show raw terminal commands without a plain-English explanation of what they do.
+- Show all outputs as tables, bullet lists, or prose — never raw JSON or code blocks.
+- Always ask for confirmation before taking any irreversible action.
+
+{{IF_TECHNICAL}}
+- Assume Python, git, and CLI fluency.
+- Prefer the team's existing patterns and dependencies over introducing new ones.
+- Code must be production-ready with full docstrings from the first draft.
+
+---
+
+## 3. Tools & Environment
+
+| Tool | Purpose | Notes |
+|---|---|---|
+| `{{TOOL_1}}` | `{{PURPOSE_1}}` | `{{NOTES_1}}` |
+| `{{TOOL_2}}` | `{{PURPOSE_2}}` | `{{NOTES_2}}` |
+
+**Key file paths:**
+- Input data: `{{INPUT_PATH}}`
+- Output: `{{OUTPUT_PATH}}`
+- Shared config: `../../COMPANY_CLAUDE.md`
+
+**MCP Boundaries:**
+- ✅ Allowed: `{{ALLOWED_MCP_TOOLS}}`
+- ❌ Forbidden: `{{FORBIDDEN_MCP_TOOLS}}`
+
+---
+
+## 4. Primary Workflows
+
+### Workflow A: {{WORKFLOW_A_NAME}}
+
+**When to use:** {{TRIGGER_CONDITION}}
+
+```
+Step 1: Read {{INPUT_FILE}} and validate schema (see Section 6)
+Step 2: {{ACTION_2}}
+Step 3: {{ACTION_3}}
+Step 4: Write output to {{OUTPUT_FILE}}
+Step 5: Run validation (see Section 6)
+Step 6: Git commit with message: "feat: {{SHORT_DESCRIPTION}}"
+```
+
+### Workflow B: {{WORKFLOW_B_NAME}}
+
+**When to use:** {{TRIGGER_CONDITION_B}}
+
+```
+Step 1: {{ACTION_B_1}}
+Step 2: {{ACTION_B_2}}
+Step 3: {{ACTION_B_3}}
+```
+
+---
+
+## 5. Sub-Agent Architecture (if applicable)
+
+For complex tasks, spawn specialized sub-agents:
+
+| Agent | Responsibility | Input | Output |
+|---|---|---|---|
+| `{{ORCHESTRATOR}}` | Read task, decompose, spawn agents | User prompt | Task breakdown |
+| `{{SPECIALIST_1}}` | {{SPECIALIST_1_JOB}} | {{INPUT_1}} | {{OUTPUT_1}} |
+| `{{SPECIALIST_2}}` | {{SPECIALIST_2_JOB}} | {{INPUT_2}} | {{OUTPUT_2}} |
+| `{{VALIDATOR}}` | Check against schema | All outputs | Pass/fail report |
+
+**Reference:** `.agent/skills/sub-agent-spawner.md`
+
+---
+
+## 6. Output Schema & Validation
+
+**Required output format:** `{{CSV / MARKDOWN / JSON / CODE}}`
+
+**Schema:**
+```
+{{FIELD_1}}: {{TYPE}} — {{DESCRIPTION}} (max: {{MAX_LENGTH}})
+{{FIELD_2}}: {{TYPE}} — {{DESCRIPTION}}
+```
+
+**Validation checklist (Claude must run before delivering output):**
+- [ ] {{VALIDATION_RULE_1}}
+- [ ] {{VALIDATION_RULE_2}}
+- [ ] {{VALIDATION_RULE_3}}
+
+---
+
+## 7. Safety & Forbidden Actions
+
+1. **Git checkpoint first.** Always run `git add -A && git commit -m "checkpoint"` before any autonomous run.
+2. **Never access:** `{{FORBIDDEN_DATA_SOURCES}}`
+3. **Never modify:** `{{PROTECTED_FILES}}`
+4. **Confirmation required for:** `{{IRREVERSIBLE_ACTIONS}}`
+5. **MCP rule:** Use MCP server (not CLI) for any tool touching `{{SENSITIVE_SYSTEM}}`.
+
+---
+
+## 8. Custom Slash Commands
+
+| Command | What it does |
+|---|---|
+| `/{{COMMAND_1}}` | {{DESCRIPTION_1}} |
+| `/{{COMMAND_2}}` | {{DESCRIPTION_2}} |
+| `/security-review` | Run security checklist on current PR (see `cross-team/security-review/`) |
+
+---
+
+## 9. Error Recovery
+
+If something goes wrong:
+1. **Stop immediately.** Don't try to fix a bad autonomous run — roll back first.
+2. Run: `git reset --hard HEAD` to return to the last checkpoint.
+3. Read the error message carefully and describe it to Claude in plain English.
+4. For persistent errors, escalate to `{{ESCALATION_CONTACT}}`.
+
+---
+
+## 10. Session-End Ritual
+
+At the end of **every** session, run this prompt:
+> *"Summarize what we did this session and suggest 3 improvements to this CLAUDE.md based on what we learned today."*
+
+Then:
+1. Copy suggestions into the `## Lessons Learned` section below.
+2. Add a one-line entry to the root `CHANGELOG.md`: `YYYY-MM-DD | {{TEAM_NAME}} | [What changed]`
+3. `git commit -m "session-end: {{TEAM_NAME}} [brief]"`
+
+---
+
+## Lessons Learned
+
+*(Populated automatically via the session-end ritual)*
+
+| Date | Lesson | Added By |
+|---|---|---|
+| {{DATE}} | Initial CLAUDE.md created from template | {{NAME}} |

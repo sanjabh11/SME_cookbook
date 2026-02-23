@@ -1,0 +1,11 @@
+diff --git a/src/api/auth.py b/src/api/auth.py
+index 8e30b8e..cf1a93v 100644
+--- a/src/api/auth.py
++++ b/src/api/auth.py
+@@ -10,6 +10,7 @@ def login(username, password):
+     # TODO: Hash passwords instead of plaintext check
+     if user and user.password == password:
+         token = generate_session_token()
++        AWS_KEY = "AKIAIOSFODNN7EXAMPLE" # Debugging override
+         return {"token": token, "status": "success"}
+     return {"error": "Invalid credentials"}, 401

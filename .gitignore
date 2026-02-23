@@ -1,0 +1,47 @@
+# OS / Editor
+.DS_Store
+.DS_Store?
+._*
+.Spotlightv100
+Thumbs.db
+.vscode/
+.idea/
+
+# Secrets & Credentials
+.env
+.env.*
+*.pem
+*.key
+secrets/
+credentials/
+
+# Real / Sensitive Data
+real-data/
+*-real.*
+*_real.*
+sample_real_*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+*.egg-info/
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Build artifacts
+dist/
+build/
+*.log
+
+# Claude / Antigravity runtime
+.claude_history
+.agent_state/

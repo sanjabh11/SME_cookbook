@@ -1,0 +1,8 @@
+Feature: User Notification Dropdown
+Requirements:
+- Bell icon with unread badge count
+- Dropdown panel showing last 5 notifications
+- "Mark all as read" button
+- Hover states using Tailwind CSS classes
+- Mobile responsive (full screen modal on mobile, dropdown on desktop)
+- Include empty state (no notifications)

@@ -1,0 +1,9 @@
+[This is a placeholder for a pasted image mockup]
+
+Description of the UI/System Block to parse:
+----------------------------------------
+Block A: "Lidar Sensor Node" (Publishes: /scan, Type: sensor_msgs/LaserScan)
+Block B: "Obstacle Avoidance Logic" (Subscribes: /scan, Publishes: /cmd_vel, Type: geometry_msgs/Twist)
+Block C: "Robot Base Controller" (Subscribes: /cmd_vel)
+
+If an obstacle is closer than 0.5 meters in the front 30 degrees, the Twist command should be linear.x = 0.0 and angular.z = 0.5 (turn left). Otherwise, linear.x = 0.3, angular.z = 0.0 (move forward).

@@ -1,0 +1,7 @@
+Task: Build a Markdown Linter Sub-Agent
+Input: A markdown file
+Sub-agents needed:
+1. Link checker (verifies all relative links are valid)
+2. Formatting checker (ensures H1-H6 hierarchy is strictly descending)
+Output: A JSON report
+Validate: All valid output must contain a "pass" or "fail" boolean flag.
